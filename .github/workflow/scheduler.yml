@@ -1,0 +1,34 @@
+name: YouTube Drive Uploader
+
+on:
+  schedule:
+    - cron: "0 */5 * * *"
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run script
+        env:
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+          DRIVE_UPLOADED_FOLDER_ID: ${{ secrets.DRIVE_UPLOADED_FOLDER_ID }}
+          YOUTUBE_PRIVACY: ${{ secrets.YOUTUBE_PRIVACY }}
+          YOUTUBE_CATEGORY: ${{ secrets.YOUTUBE_CATEGORY }}
+          YOUTUBE_DESCRIPTION: ${{ secrets.YOUTUBE_DESCRIPTION }}
+          YOUTUBE_TAGS: ${{ secrets.YOUTUBE_TAGS }}
+        run: python main.py
