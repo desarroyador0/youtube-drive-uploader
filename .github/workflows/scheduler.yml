@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -20,8 +20,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Recreate credentials files
+        shell: bash
+        run: |
+          mkdir -p credentials
+
+          echo "${{ secrets.CLIENT_SECRET_JSON }}" | base64 --decode > credentials/client_secret.json
+          echo "${{ secrets.TOKEN_FILE }}" | base64 --decode > credentials/token.json
 
       - name: Run script
         env:
