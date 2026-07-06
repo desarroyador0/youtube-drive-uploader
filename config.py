@@ -38,6 +38,11 @@ class Config:
             "YOUTUBE_CATEGORY",
             "22"
         )
+        # ==========================
+        # Gemini
+        # ==========================
+
+        self.GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
         self.YOUTUBE_DESCRIPTION = os.getenv(
             "YOUTUBE_DESCRIPTION",
@@ -65,6 +70,7 @@ class Config:
                 "5"
             )
         )
+        
 
 
 config = Config()

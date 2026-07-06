@@ -6,6 +6,7 @@ from services.drive_service import (
 )
 
 from services.youtube_service import subir_video
+from services.ai_service import generar_descripcion
 
 from config import config
 from utils.logger import logger
@@ -52,11 +53,25 @@ def main():
         logger.info(f"📥 Descargado en: {ruta}")
 
         # ==========================
+        # GENERAR DESCRIPCIÓN CON IA
+        # ==========================
+        titulo = video["name"].rsplit(".", 1)[0]
+
+        logger.info("🤖 Generando descripción con IA...")
+
+        descripcion = generar_descripcion(titulo)
+
+        logger.info("✅ Descripción generada")
+
+        # ==========================
         # SUBIR A YOUTUBE
         # ==========================
         logger.info("⬆️ Subiendo a YouTube...")
 
-        video_id = subir_video(ruta)
+        video_id = subir_video(
+            ruta,
+            descripcion
+        )
 
         logger.info(f"✅ Video subido: {video_id}")
 
