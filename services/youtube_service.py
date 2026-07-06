@@ -1,3 +1,4 @@
+import os
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
@@ -15,10 +16,10 @@ def autenticar_youtube():
 def subir_video(ruta):
 
     youtube = autenticar_youtube()
-
+    titulo = os.path.splitext(os.path.basename(ruta))[0]
     request_body = {
         "snippet": {
-            "title": "Video automatizado",
+            "title": titulo,
             "description": config.YOUTUBE_DESCRIPTION,
             "tags": config.YOUTUBE_TAGS,
             "categoryId": config.YOUTUBE_CATEGORY
@@ -26,6 +27,7 @@ def subir_video(ruta):
         "status": {
             "privacyStatus": config.YOUTUBE_PRIVACY
         }
+        
     }
 
     media = MediaFileUpload(ruta, chunksize=-1, resumable=True)
