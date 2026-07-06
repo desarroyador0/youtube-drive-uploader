@@ -27,10 +27,12 @@ def subir_video(ruta, descripcion):
             "title": titulo,
             "description": descripcion,
             "tags": config.YOUTUBE_TAGS,
-            "categoryId": config.YOUTUBE_CATEGORY
+            "categoryId": config.YOUTUBE_CATEGORY,
+            "defaultLanguage": "es"
         },
         "status": {
-            "privacyStatus": config.YOUTUBE_PRIVACY
+            "privacyStatus": "public",
+            "selfDeclaredMadeForKids": False
         }
     }
 
