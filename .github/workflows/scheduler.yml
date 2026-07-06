@@ -39,4 +39,5 @@ jobs:
           YOUTUBE_CATEGORY: ${{ secrets.YOUTUBE_CATEGORY }}
           YOUTUBE_DESCRIPTION: ${{ secrets.YOUTUBE_DESCRIPTION }}
           YOUTUBE_TAGS: ${{ secrets.YOUTUBE_TAGS }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python main.py
