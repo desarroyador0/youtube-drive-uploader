@@ -1,7 +1,7 @@
-from services.ai_service import generar_descripcion
+from services.ai_service import generar_metadata
 
-print(
-    generar_descripcion(
-        "Colors in English"
-    )
+metadata = generar_metadata(
+    "Tina_teaches_number_one_202607090130.mp4"
 )
+
+print(metadata)

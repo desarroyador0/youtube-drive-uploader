@@ -1,3 +1,5 @@
+import json
+
 from google import genai
 
 from config import config
@@ -8,37 +10,56 @@ client = genai.Client(
 )
 
 
-def generar_descripcion(titulo):
+def generar_metadata(nombre_archivo):
 
     prompt = f"""
-Eres el redactor del canal de YouTube "InfantEnglish".
+Eres un experto en YouTube SEO y contenido infantil.
 
-El personaje principal es Tina, una elefante animada que enseña inglés a niños.
+El canal se llama "InfantEnglish".
 
-A partir del siguiente título:
+El personaje principal es Tina, una elefante animada que enseña inglés a niños hispanohablantes mediante videos muy cortos.
 
-{titulo}
+El nombre del archivo es:
 
-Genera:
+{nombre_archivo}
 
-- Una descripción de máximo 2 oraciones.
-- Que sea alegre, amigable y atrapante.
-- Pensada para padres y niños.
-- No uses demasiados emojis (máximo 2).
-- Finaliza con exactamente 7 hashtags relacionados con:
-    - inglés
-    - niños
-    - educación
-    - InfantEnglish
-    - Tina
-    - el tema del video
+Reglas:
 
-Devuelve únicamente la descripción.
+1. Elimina la extensión (.mp4, .mov, etc.).
+2. Elimina cualquier fecha u hora al final del nombre.
+   Ejemplo:
+   Tina_teaches_number_one_202607090130
+   debe interpretarse como:
+   Tina teaches number one
+3. Interpreta el tema del video.
+4. Genera un título atractivo en español.
+5. El título debe ser corto, natural y pensado para YouTube Shorts.
+6. Genera una descripción de máximo 2 oraciones.
+7. La descripción debe invitar a aprender inglés de forma divertida.
+8. Finaliza con exactamente 7 hashtags relacionados con:
+   - aprender inglés
+   - niños
+   - educación
+   - InfantEnglish
+   - Tina
+   - el tema del video
+
+IMPORTANTE:
+
+Responde ÚNICAMENTE un JSON válido con este formato:
+
+{{
+    "titulo": "...",
+    "descripcion": "..."
+}}
 """
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
-        contents=prompt
+        contents=prompt,
+        config={
+            "response_mime_type": "application/json"
+        }
     )
 
-    return response.text.strip()
+    return json.loads(response.text)

@@ -6,7 +6,7 @@ from services.drive_service import (
 )
 
 from services.youtube_service import subir_video
-from services.ai_service import generar_descripcion
+from services.ai_service import generar_metadata
 
 from config import config
 from utils.logger import logger
@@ -55,13 +55,16 @@ def main():
         # ==========================
         # GENERAR DESCRIPCIÓN CON IA
         # ==========================
-        titulo = video["name"].rsplit(".", 1)[0]
+        logger.info("🤖 Generando metadata con IA...")
 
-        logger.info("🤖 Generando descripción con IA...")
+        metadata = generar_metadata(
+            video["name"]
+        )
 
-        descripcion = generar_descripcion(titulo)
+        logger.info("✅ Metadata generada")
 
-        logger.info("✅ Descripción generada")
+        titulo = metadata["titulo"]
+        descripcion = metadata["descripcion"]
 
         # ==========================
         # SUBIR A YOUTUBE
@@ -70,10 +73,9 @@ def main():
 
         video_id = subir_video(
             ruta,
+            titulo,
             descripcion
         )
-
-        logger.info(f"✅ Video subido: {video_id}")
 
         # ==========================
         # MOVER EN DRIVE (SUBIDOS)

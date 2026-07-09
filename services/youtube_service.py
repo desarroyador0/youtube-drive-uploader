@@ -1,5 +1,3 @@
-import os
-
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
@@ -11,16 +9,20 @@ def autenticar_youtube():
 
     creds = obtener_credenciales()
 
-    return build("youtube", "v3", credentials=creds)
+    return build(
+        "youtube",
+        "v3",
+        credentials=creds
+    )
 
 
-def subir_video(ruta, descripcion):
+def subir_video(
+    ruta,
+    titulo,
+    descripcion
+):
 
     youtube = autenticar_youtube()
-
-    titulo = os.path.splitext(
-        os.path.basename(ruta)
-    )[0]
 
     request_body = {
         "snippet": {
